@@ -119,4 +119,6 @@ urlpatterns = [
     path('cc_productcostpayment_if/productcostpaymenttemplate_download', views.productcostpaymenttemplate_download,
          name='productcostpaymenttemplate_download'),
     path('cc_productcostpayment_if/productcostpaymentdata_upload', views.productcostpaymentdata_upload, name='productcostpayment_upload'),
+
+    path('chart_view', views.chart_view, name='chart_view'),
 ]

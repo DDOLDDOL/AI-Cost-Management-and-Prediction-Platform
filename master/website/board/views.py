@@ -13,6 +13,7 @@ from datetime import datetime
 
 import pymysql
 from django.conf import settings
+
 MYDB = getattr(settings, "DATABASES", None)
 MYDB_NAME = MYDB["default"]["NAME"]
 MYDB_USER = MYDB["default"]["USER"]
@@ -2141,6 +2142,7 @@ def costcenter_element_delete(request):
     context["result_msg"] = "costcenter elements delete success..."
     return JsonResponse(context, content_type="application/json")
 
+
 # *********************************************************************************************************************
 # 코스트센터 코드 끝
 # *********************************************************************************************************************
@@ -2152,11 +2154,11 @@ def costcenter_element_delete(request):
 def cc_manucost_if(request):
     context = {}
 
-    strSql= "SELECT  a.*, b.*, c.*, d.* " \
-            "FROM (SELECT * FROM cc_manucost_if) a " \
-            "LEFT JOIN b_co b ON a.co_id = b.id " \
-            "LEFT JOIN cb_cost_center c ON a.cstctr_id = c.id " \
-            "LEFT JOIN b_itemaccnt d ON a.itemaccnt_id = d.id "
+    strSql = "SELECT  a.*, b.*, c.*, d.* " \
+             "FROM (SELECT * FROM cc_manucost_if) a " \
+             "LEFT JOIN b_co b ON a.co_id = b.id " \
+             "LEFT JOIN cb_cost_center c ON a.cstctr_id = c.id " \
+             "LEFT JOIN b_itemaccnt d ON a.itemaccnt_id = d.id "
     rsManucost = CcManucostIf.objects.raw(strSql)
     context["rsManucost"] = rsManucost
 
@@ -2164,12 +2166,12 @@ def cc_manucost_if(request):
     rsCstctr = CbCostCenter.objects.filter(usage_fg='Y')
     rsItemaccnt = BItemaccnt.objects.filter(usage_fg='Y')
 
-
     context["rsCo"] = rsCo
     context["rsCstctr"] = rsCstctr
     context["rsItemaccnt"] = rsItemaccnt
 
     return render(request, 'board2/cc_manucost_if.html', context)
+
 
 @csrf_exempt
 def manucosttemplate_download(request):
@@ -2212,11 +2214,11 @@ def manucosttemplate_download(request):
         context["result_msg"] = "품목코드 테이블 없음... "
         return JsonResponse(context, content_type="application/json")
 
-
     context["flag"] = "0"
     context["result_msg"] = "Template downloaded... "
 
     return JsonResponse(context, content_type="application/json")
+
 
 @csrf_exempt
 def manucostdata_upload(request):
@@ -2318,6 +2320,7 @@ def manucostdata_upload(request):
 
     return redirect('board:cc_manucost_if')
 
+
 # *********************************************************************************************************************
 # 제조비용 코드 끝
 # *********************************************************************************************************************
@@ -2347,6 +2350,7 @@ def cc_materialcost_if(request):
     context["rsWrkctr"] = rsWrkctr
 
     return render(request, 'board2/cc_materialcost_if.html', context)
+
 
 @csrf_exempt
 def materialcosttemplate_download(request):
@@ -2389,11 +2393,11 @@ def materialcosttemplate_download(request):
         context["result_msg"] = "품목코드 테이블 없음... "
         return JsonResponse(context, content_type="application/json")
 
-
     context["flag"] = "0"
     context["result_msg"] = "Template downloaded... "
 
     return JsonResponse(context, content_type="application/json")
+
 
 @csrf_exempt
 def materialcostdata_upload(request):
@@ -2462,28 +2466,28 @@ def materialcostdata_upload(request):
             for j in range(3, max_row + 1):
                 lstTmp = []
                 strbottom = ""
-    
+
                 for i in range(1, max_col + 1):
                     valTmp = sheet.cell(row=j, column=i).value
-    
+
                     lstTmp.append(valTmp)
-    
+
                     if valTmp == '':
                         strbottom += "default,"
                     elif valTmp == None:
                         strbottom += "default,"
                     else:
                         strbottom += "'" + str(valTmp) + "',"
-    
+
                 strbottom = strbottom[:-1]
-    
+
                 strSql = "INSERT INTO cc_materialcost_if VALUES (" + strbottom + ")"
-    
+
                 cursor = dbCon.cursor()
                 cursor.execute(strSql)
                 rows = cursor.fetchone()
                 cursor.close()
-    
+
             dbCon.commit()
             book.close()
         except:
@@ -2494,6 +2498,7 @@ def materialcostdata_upload(request):
         return redirect('board:cc_materialcost_if')
 
     return redirect('board:cc_materialcost_if')
+
 
 # *********************************************************************************************************************
 # 재료비 코드 끝
@@ -2521,6 +2526,7 @@ def cc_itempermanucost_if(request):
     context["rsItemaccnt"] = rsItemaccnt
 
     return render(request, 'board2/cc_itempermanucost_if.html', context)
+
 
 @csrf_exempt
 def itempermanucosttemplate_download(request):
@@ -2563,11 +2569,11 @@ def itempermanucosttemplate_download(request):
         context["result_msg"] = "품목코드 테이블 없음... "
         return JsonResponse(context, content_type="application/json")
 
-
     context["flag"] = "0"
     context["result_msg"] = "Template downloaded... "
 
     return JsonResponse(context, content_type="application/json")
+
 
 @csrf_exempt
 def itempermanucostdata_upload(request):
@@ -2619,7 +2625,7 @@ def itempermanucostdata_upload(request):
 
     max_col = len(rsColumns)
 
-    #timenow = datetime.now()
+    # timenow = datetime.now()
 
     filename = 'static/dataupload/cc_itempermanucost/' + file_name
 
@@ -2632,36 +2638,36 @@ def itempermanucostdata_upload(request):
         max_row = sheet.max_row
 
     if max_row > 2:
-        
+
         try:
             for j in range(3, max_row + 1):
                 lstTmp = []
                 strbottom = ""
-    
+
                 for i in range(1, max_col + 1):
                     valTmp = sheet.cell(row=j, column=i).value
-    
+
                     lstTmp.append(valTmp)
-    
+
                     if valTmp == '':
                         strbottom += "default,"
                     elif valTmp == None:
                         strbottom += "default,"
                     else:
                         strbottom += "'" + str(valTmp) + "',"
-    
+
                 strbottom = strbottom[:-1]
-    
+
                 strSql = "INSERT INTO cc_itempermanucost_if VALUES (" + strbottom + ")"
-    
+
                 cursor = dbCon.cursor()
                 cursor.execute(strSql)
                 rows = cursor.fetchone()
                 cursor.close()
-    
+
             dbCon.commit()
             book.close()
-        
+
         except:
             print("엑셀오류")
             return redirect('board:cc_itempermanucost_if')
@@ -2695,6 +2701,7 @@ def cc_productcostpayment_if(request):
     context["rsFactory"] = rsFactory
 
     return render(request, 'board2/cc_productcostpayment_if.html', context)
+
 
 @csrf_exempt
 def productcostpaymenttemplate_download(request):
@@ -2736,7 +2743,6 @@ def productcostpaymenttemplate_download(request):
         context["flag"] = "1"
         context["result_msg"] = "품목코드 테이블 없음... "
         return JsonResponse(context, content_type="application/json")
-
 
     context["flag"] = "0"
     context["result_msg"] = "Template downloaded... "
@@ -2794,7 +2800,7 @@ def productcostpaymentdata_upload(request):
 
     max_col = len(rsColumns)
 
-    #timenow = datetime.now()
+    # timenow = datetime.now()
 
     filename = 'static/dataupload/cc_productcostpayment/' + file_name
 
@@ -2811,28 +2817,28 @@ def productcostpaymentdata_upload(request):
             for j in range(3, max_row + 1):
                 lstTmp = []
                 strbottom = ""
-    
+
                 for i in range(1, max_col + 1):
                     valTmp = sheet.cell(row=j, column=i).value
-    
+
                     lstTmp.append(valTmp)
-    
+
                     if valTmp == '':
                         strbottom += "default,"
                     elif valTmp == None:
                         strbottom += "default,"
                     else:
                         strbottom += "'" + str(valTmp) + "',"
-    
+
                 strbottom = strbottom[:-1]
-    
+
                 strSql = "INSERT INTO cc_productcostpayment_if VALUES (" + strbottom + ")"
-    
+
                 cursor = dbCon.cursor()
                 cursor.execute(strSql)
                 rows = cursor.fetchone()
                 cursor.close()
-    
+
             dbCon.commit()
             book.close()
         except:
@@ -2848,3 +2854,6 @@ def productcostpaymentdata_upload(request):
 # *********************************************************************************************************************
 # 제품원가수불 코드 끝
 # *********************************************************************************************************************
+
+def chart_view(request):
+    return render(request, 'board/chart_view.html')

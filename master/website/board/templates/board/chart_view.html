@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+</head>
+
+<body>
+
+  <div id="container" style="width: 75%;">
+    <canvas id="pie-chart"></canvas>
+  </div>
+
+  <script>
+    let myChartOne = document.getElementById('pie-chart').getContext('2d');
+
+    let barChart = new Chart(myChartOne, {
+      type: 'bar',
+      data: {
+        labels: ['a', 'b', 'c', 'd'],
+        datasets: [{
+          label: 'ee',
+          data: [
+            1,
+            10,
+            100,
+            1000
+          ]
+        }]
+      }
+    })
+  </script>
+
+</body>
+</html>
