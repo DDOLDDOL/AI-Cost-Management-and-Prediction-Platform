@@ -196,7 +196,7 @@ def factory_detail(request, pk):
 @csrf_exempt
 def workcenter_list(request):
     if request.method == 'GET':
-        query_set = BWorkcenter.objects.all()
+        query_set = BWorkcenter.objects.filter(usage_fg='Y')
         serializer = BWorkcenterSerializer(query_set, many=True)
         return JsonResponse(serializer.data, safe=False)
 

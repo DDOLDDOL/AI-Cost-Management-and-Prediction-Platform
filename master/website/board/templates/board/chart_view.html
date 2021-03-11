@@ -1,36 +1,127 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>chart</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-</head>
+{% extends "base.html" %}
+{% load static %}
 
-<body>
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}
 
-  <div id="container" style="width: 75%;">
-    <canvas id="pie-chart"></canvas>
-  </div>
+{% block body %}
 
-  <script>
-    let myChartOne = document.getElementById('pie-chart').getContext('2d');
+    {% include "navbar.html" %}
+    {% include "sidebar.html" %}
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-table"></i> 원가 차트</h3>
+                </div>
+            </div>
 
-    let barChart = new Chart(myChartOne, {
-      type: 'bar',
-      data: {
-        labels: ['a', 'b', 'c', 'd'],
-        datasets: [{
-          label: 'ee',
-          data: [
-            1,
-            10,
-            100,
-            1000
-          ]
-        }]
+            <div id="container" style="width: 75%;">
+                <canvas id="pie-chart"></canvas>
+                <button id="btn_get_data" onclick="get_data()">데이터 받기</button>
+                <textarea id="text_get_data">null</textarea>
+            </div>
+        </section>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script>
+      let myChartOne = document.getElementById('pie-chart').getContext('2d');
+
+      let barChart = new Chart(myChartOne, {
+        type: 'line',
+        data: {
+          labels: ['a', 'b', 'c', 'd'],
+          datasets: [{
+            label: 'e',
+            data: [
+              75000,
+              80000,
+              78000,
+              77000
+            ],
+            backgroundColor: [
+              "#FF0000",
+              "#00FF00",
+              "#0000FF",
+              "#00FFFF"
+            ],
+            borderWidth: 1,
+            borderColor: "#000000",
+            hoverBorderWidth: 3,
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              display: true,
+              ticks: {
+                suggestedMax: 100000,
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      })
+
+      function getCookie(name) {
+        var cookieValue = null;
+
+        if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
       }
-    })
-  </script>
 
-</body>
-</html>
+      var csrftoken = getCookie('csrftoken');
+      var xhr;
+
+      function get_data() {
+        xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              var data = xhr.responseText;
+              var obj1 = JSON.parse(data);
+
+              var obj = obj1[0];
+              var wcd = obj['workcenter_cd'];
+            //  var wnm = obj['workcenter_nm'];
+            //  var cid = obj['cstctr_id'];
+
+              var txt=document.getElementById('text_get_data');
+              txt.innerText = wcd;
+            }
+          } else {
+            if (xhr.status == 400) {
+              var data = xhr.responseText;
+              var obj = JSON.parse(data);
+
+              if (obj.detail == "") {//추후 에러처리 추가시 사용
+                alert("에러코드");
+              } else {
+                alert("400 Bad Request");
+              }
+            }
+          }
+        };
+
+        var strurl = "http://127.0.0.1:8080/rest_api/workcenters";
+        xhr.open("GET", strurl, true);
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(null);
+      }
+    </script>
+{% endblock %}
