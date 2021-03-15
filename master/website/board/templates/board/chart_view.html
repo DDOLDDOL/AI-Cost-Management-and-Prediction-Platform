@@ -28,42 +28,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script>
       let myChartOne = document.getElementById('pie-chart').getContext('2d');
+      let dataMap = new Map();
 
-      let barChart = new Chart(myChartOne, {
-        type: 'line',
-        data: {
-          labels: ['a', 'b', 'c', 'd'],
-          datasets: [{
-            label: 'e',
-            data: [
-              75000,
-              80000,
-              78000,
-              77000
-            ],
-            backgroundColor: [
-              "#FF0000",
-              "#00FF00",
-              "#0000FF",
-              "#00FFFF"
-            ],
-            borderWidth: 1,
-            borderColor: "#000000",
-            hoverBorderWidth: 3,
-          }]
-        },
-        options: {
-          scales: {
-            yAxes: [{
-              display: true,
-              ticks: {
-                suggestedMax: 100000,
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      })
+      let _labels=[];
+      let _datas=[];
+
+      dataMap.set("a", 5000);
+      dataMap.set("b", 6000);
+      dataMap.set("c", 7000);
+      dataMap.set("d", 8000);
 
       function getCookie(name) {
         var cookieValue = null;
@@ -87,41 +60,77 @@
       var csrftoken = getCookie('csrftoken');
       var xhr;
 
-      function get_data() {
-        xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-              var data = xhr.responseText;
-              var obj1 = JSON.parse(data);
+      window.onload = function() {
+          var txt = document.getElementById('text_get_data');
 
-              var obj = obj1[0];
-              var wcd = obj['workcenter_cd'];
-            //  var wnm = obj['workcenter_nm'];
-            //  var cid = obj['cstctr_id'];
+          xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4) {
+                  if (xhr.status == 200) {
+                      var data = xhr.responseText;
+                      var obj_dic = JSON.parse(data);
 
-              var txt=document.getElementById('text_get_data');
-              txt.innerText = wcd;
-            }
-          } else {
-            if (xhr.status == 400) {
-              var data = xhr.responseText;
-              var obj = JSON.parse(data);
+                      for (var i = 0; i < obj_dic.length; i++) {
+                          var obj = obj_dic[i];
+                          _labels[i] = obj['cstctr_nm'];
+                          _datas[i] = obj['factory_id'];
+                      }
 
-              if (obj.detail == "") {//추후 에러처리 추가시 사용
-                alert("에러코드");
+                      console.log(_labels);
+                      console.log(_datas);
+
+                      //  var wnm = obj['workcenter_nm'];
+                      //  var cid = obj['cstctr_id'];
+                      let barChart = new Chart(myChartOne, {
+                          type: 'line',
+                          data: {
+                              labels: _labels,
+                              datasets: [{
+                                  label: 'e',
+                                  data: _datas,
+                                  backgroundColor: [
+                                      "#FF0000",
+                                      "#00FF00",
+                                      "#0000FF",
+                                      "#00FFFF"
+                                  ],
+                                  borderWidth: 1,
+                                  borderColor: "#000000",
+                                  hoverBorderWidth: 3,
+                              }]
+                          },
+                          options: {
+                              scales: {
+                                  yAxes: [{
+                                      display: true,
+                                      ticks: {
+                                          suggestedMax: 20,
+                                          beginAtZero: true
+                                      }
+                                  }]
+                              }
+                          }
+                      })
+                  }
               } else {
-                alert("400 Bad Request");
-              }
-            }
-          }
-        };
+                  if (xhr.status == 400) {
+                      var data = xhr.responseText;
+                      var obj = JSON.parse(data);
 
-        var strurl = "http://127.0.0.1:8080/rest_api/workcenters";
-        xhr.open("GET", strurl, true);
-        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(null);
+                      if (obj.detail == "") {//추후 에러처리 추가시 사용
+                          alert("에러코드");
+                      } else {
+                          alert("400 Bad Request");
+                      }
+                  }
+              }
+          };
+
+          var strurl = "http://127.0.0.1:8080/rest_api/costcenters";
+          xhr.open("GET", strurl, true);
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.send(null);
       }
     </script>
 {% endblock %}
