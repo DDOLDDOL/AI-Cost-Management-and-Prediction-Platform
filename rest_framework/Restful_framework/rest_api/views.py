@@ -545,6 +545,63 @@ def cstctr_detail(request, pk):
 
 
 
+##############################################################################
+
+
+
+@api_view(['GET', 'POST'])
+@csrf_exempt
+def costbill_list(request):
+    if request.method == 'GET':
+        query_set = CcCostBill1.objects.raw("SELECT * FROM cc_costbill1 WHERE id<=20")
+        serializer = CcCostBill1Serializer(query_set, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+
+        if CbCostCenter.objects.filter(cstctr_cd=data['cstctr_cd'], usage_fg='Y').exists():
+            raise exceptions.ParseError("Duplicate Code")
+
+        if CbCostCenter.objects.filter(cstctr_nm=data['cstctr_nm'], usage_fg='Y').exists():
+            raise exceptions.ParseError("Duplicate Name")
+
+        serializer = CbCostCenterSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+
+    return JsonResponse(serializer.errors, status=400)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@csrf_exempt
+def costbill_detail(request, pk):
+    obj = CbCostCenter.objects.get(id=pk)
+
+    if request.method == 'GET':  # 현재 화면에선 개별조회 미지원.
+        serializer = CbCostCenterSerializer(obj)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+
+        if CbCostCenter.objects.filter(cstctr_nm=data['cstctr_nm'], usage_fg='Y').exists():
+            raise exceptions.ParseError("Duplicate Name")
+
+        serializer = CbCostCenterSerializer(obj, data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=200)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        obj.usage_fg = 'N'
+        obj.save()
+        return HttpResponse(status=204)
+
 
 
 
