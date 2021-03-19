@@ -121,4 +121,6 @@ urlpatterns = [
     path('cc_productcostpayment_if/productcostpaymentdata_upload', views.productcostpaymentdata_upload, name='productcostpayment_upload'),
 
     path('chart_view', views.chart_view, name='chart_view'),
+
+    path('chart_prac', views.chart_prac, name='chart_prac')
 ]

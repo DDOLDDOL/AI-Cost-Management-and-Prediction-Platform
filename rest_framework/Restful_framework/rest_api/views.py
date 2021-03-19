@@ -553,7 +553,7 @@ def cstctr_detail(request, pk):
 @csrf_exempt
 def costbill_list(request):
     if request.method == 'GET':
-        query_set = CcCostBill1.objects.raw("SELECT * FROM cc_costbill1 WHERE id<=20")
+        query_set = CcCostBill1.objects.raw("SELECT * FROM cc_costbill1")
         serializer = CcCostBill1Serializer(query_set, many=True)
         return JsonResponse(serializer.data, safe=False)
 

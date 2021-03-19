@@ -2857,3 +2857,6 @@ def productcostpaymentdata_upload(request):
 
 def chart_view(request):
     return render(request, 'board/chart_view.html')
+
+def chart_prac(request):
+    return render(request, 'board/chart_prac.html')

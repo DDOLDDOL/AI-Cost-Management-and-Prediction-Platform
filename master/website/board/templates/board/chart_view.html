@@ -9,6 +9,25 @@
 
     {% include "navbar.html" %}
     {% include "sidebar.html" %}
+
+    <style>
+        .chartWrapper {
+            position: relative;
+        }
+
+        .chartWrapper > canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+        }
+
+        .chartAreaWrapper {
+            width: 600px;
+            overflow-x: scroll;
+        }
+    </style>
+
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
@@ -17,8 +36,11 @@
                 </div>
             </div>
 
-            <div id="container" style="width: 75%;">
-                <canvas id="pie-chart"></canvas>
+            <div id="container" class="chartWrapper" style="width:100%;">
+                <div class="chartAreaWrapper">
+                    <canvas id="pie-chart" height="400"></canvas>
+                </div>
+
                 <button id="version_id" onclick="draw_chart('version_id')">version_id</button>
                 <button id="ic_idlc" onclick="draw_chart('ic_idlc')">ic_idlc</button>
                 <button id="ic_dlfc" onclick="draw_chart('ic_dlfc')">ic_dlfc</button>
@@ -78,19 +100,21 @@
                         var data = xhr.responseText;
                         var obj_dic = JSON.parse(data);
 
+                        var canvas=document.getElementById('pie-chart');
+                        canvas.style.width=obj_dic.length * 30 + "px";
+
                         for (var i = 0; i < obj_dic.length; i++) {
                             var obj = obj_dic[i];
                             _labels[i] = obj['id'];
                             _datas[i] = obj[label];
 
-                            if(i%2 == 0)    _colors[i]='#FF0000'
-                            else            _colors[i]='#0000FF'
+                            if (i % 2 == 0) _colors[i] = '#FF0000'
+                            else _colors[i] = '#0000FF'
 
-                            if(i==0) {
-                                max_val=obj[label];
-                                min_val=obj[label];
-                            }
-                            else {
+                            if (i == 0) {
+                                max_val = obj[label];
+                                min_val = obj[label];
+                            } else {
                                 if (max_val < obj[label]) max_val = obj[label];
                                 if (min_val < obj[label]) min_val = obj[label];
                             }
@@ -116,7 +140,14 @@
                                 }]
                             },
                             options: {
+                                responsive: false,
                                 scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            width: 5000
+                                        }
+                                    }],
                                     yAxes: [{
                                         display: true,
                                         ticks: {
