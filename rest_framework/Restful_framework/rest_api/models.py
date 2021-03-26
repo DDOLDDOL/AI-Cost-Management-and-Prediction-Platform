@@ -367,7 +367,7 @@ class CcItemplan(models.Model):  # 제품plan
         managed = False
         db_table = 'cc_itemplan'
 
-class CcCostBill1(models.Model):  # 원가 영수증
+class CcCostBill(models.Model):  # 원가 영수증
     id = models.AutoField(db_column='id', primary_key=True)
     version_id = models.IntegerField(db_column='version_id', default=0)     #나중에 버전 관리시 FK로 변경
     #itemplan_id = models.ForeignKey(CcItemplan, on_delete=models.CASCADE)
@@ -383,4 +383,4 @@ class CcCostBill1(models.Model):  # 원가 영수증
 
     class Meta:
         managed = False
-        db_table = 'cc_costbill1'
+        db_table = 'cc_costbill'

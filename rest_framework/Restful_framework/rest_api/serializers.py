@@ -69,6 +69,6 @@ class CbCostCenterSerializer(serializers.ModelSerializer):
 
 class CcCostBill1Serializer(serializers.ModelSerializer):
     class Meta:
-        model = CcCostBill1
+        model = CcCostBill
         fields = ('id', 'version_id', 'itemplan_id', 'ic_idlc', 'ic_dlfc', 'ic_dlvc', 'ic_idohc',
                   'ic_ohdfe', 'proamt_unit', 'proamt_acc', 'proq')

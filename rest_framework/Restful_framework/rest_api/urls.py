@@ -52,6 +52,6 @@ urlpatterns = [
     path('costcenters', views.cstctr_list, name='cstctr_list'),
     path('costcenters/<int:pk>', views.cstctr_detail, name='cstctr_detail'),
 
-    path('costbill1', views.costbill_list, name='costbill_list'),
-    path('costbill1/<int:pk>', views.costbill_detail, name='costbill_detail')
+    path('costbill', views.costbill_list, name='costbill_list'),
+    path('costbill/<int:pk>', views.costbill_detail, name='costbill_detail')
 ]

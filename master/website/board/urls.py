@@ -122,5 +122,13 @@ urlpatterns = [
 
     path('chart_view', views.chart_view, name='chart_view'),
 
-    path('chart_prac', views.chart_prac, name='chart_prac')
+    path('chart_prac', views.chart_prac, name='chart_prac'),
+
+    path('chart_combo', views.chart_combo, name='chart_combo'),
+
+    path('chart_compare', views.chart_compare, name='chart_compare'),
+
+    path('chart_prac2',views.chart_prac2, name='chart_prac2'),
+
+    path('chart_main', views.chart_main, name='chart_main')
 ]

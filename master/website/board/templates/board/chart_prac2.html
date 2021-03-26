@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        var ctx = document.getElementById('chart').getContext("2d");
+        window.theChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: 'Pass',
+                    backgroundColor: "#1E90FF",
+                    data: [
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000
+                    ]
+                }, {
+                    label: 'NG',
+                    backgroundColor: "#F7464A",
+                    data: [
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000,
+                        Math.random() * 90000
+                    ]
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontColor: '#000000'
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#000000'
+                        }
+                    }]
+                }
+            }
+        });
+    }
+</script>
+<div style="width:800px; height:500px;">
+    <canvas id="chart" style="width:100%;"></canvas>
+</div>
+
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+    {% include "navbar.html" %}
+    {% include "sidebar.html" %}
+
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-table"></i> 원가 차트</h3>
+                </div>
+            </div>
+
+            <div id="container" style="width:100%;">
+                <table style="width:70%;">
+                    <tr>
+                        <td>
+                            <canvas id="year_chart" style="width:90%;"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="month_chart"style="width:90%;"></canvas>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="table-responsive">
+                    <table class="table table--min" style="width:70%;">
+                        <tr style="width:10%;">
+                            <th>구분</th>
+                            <th>전년</th>
+                            <th>당년</th>
+                            <th>성장률(%)</th>
+                            <th>전월</th>
+                            <th>당월</th>
+                            <th>성장률(%)</th>
+                        </tr>
+
+                        <tbody>
+                            <tr>
+                                <td>제조원가</td>
+                                <td>100</td>
+                                <td>110</td>
+                                <td>10.0</td>
+                                <td>14</td>
+                                <td>15.5</td>
+                                <td>10.5%</td>
+                            </tr>
+                            <tr>
+                                <td>매출액</td>
+                                <td>70</td>
+                                <td>74</td>
+                                <td>5.7</td>
+                                <td>6.7</td>
+                                <td>7.1</td>
+                                <td>6.1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script>
+        var ctx_year = document.getElementById('year_chart').getContext('2d');
+        var ctx_month = document.getElementById('month_chart').getContext('2d');
+
+        var year_chart = new Chart(ctx_year, {
+            type: 'bar',
+            data: {
+                labels: ['제조원가', '매출액'],
+                datasets: [{
+                    label: '전년',
+                    type: 'bar',
+                    backgroundColor: '#FFCC66',
+                    data: [70, 110],
+                    borderWidth: 0,
+                    hoverBorderWidth: 0
+                },{
+                    label: '당년',
+                    type: 'bar',
+                    backgroundColor: '#66CCFF',
+                    data: [74, 110],
+                    borderWidth: 0,
+                    hoverBorderWidth: 0
+                },{
+                    label: '설장률',
+                    type: 'line',
+                    fill: false,
+                    lineTension: 2,
+                    backgroundColor: '#888888',
+                    data: [10.0, 5.7],
+                    borderWidth: 0,
+                    hoverBorderWidth: 0
+                }]
+            },
+            options: {
+                responsive: false,
+                legend: {
+                    labels: {
+                        fontColor: '#000000'
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontColor: '#000000',
+                            beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#000000'
+                        }
+                    }]
+                }
+            }
+        });
+
+        var month_chart = new Chart(ctx_month, {
+            type: 'bar',
+            data: {
+                labels: ['제조원가', '매출액'],
+                datasets: [{
+                    label: '전월',
+                    backgroundColor: '#FFCC66',
+                    data: [6.7, 14],
+                    borderWidth: 0,
+                    hoverBorderWidth: 0
+                },{
+                    label: '당월',
+                    backgroundColor: '#66CCFF',
+                    data: [7.1, 15.5],
+                    borderWidth: 0,
+                    hoverBorderWidth: 0
+                }]
+            },
+
+            options: {
+                responsive: false,
+                legend: {
+                    labels: {
+                        fontColor: '#000000'
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontColor: '#000000',
+                            beginAtZero: true
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#000000'
+                        }
+                    }]
+                }
+            }
+        });
+    3</script>
+{% endblock %}

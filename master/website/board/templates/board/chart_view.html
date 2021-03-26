@@ -58,7 +58,7 @@
         let myChartOne = document.getElementById('pie-chart').getContext('2d');
         let dataMap = new Map();
 
-        let _labels=[];
+        let _labels=['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'];
         let _datas=[];
         let _colors=[];
         let max_val;
@@ -130,14 +130,24 @@
                             type: 'line',
                             data: {
                                 labels: _labels,
-                                datasets: [{
-                                    label: 'e',
-                                    data: _datas,
-                                    backgroundColor: _colors,
-                                    borderWidth: 1,
-                                    borderColor: "#000000",
-                                    hoverBorderWidth: 3,
-                                }]
+                                datasets: [
+                                    {
+                                        label: 'e',
+                                        data: _datas,
+                                        backgroundColor: _colors,
+                                        borderWidth: 1,
+                                        borderColor: "#000000",
+                                        hoverBorderWidth: 3,
+                                    }, {
+                                        type: 'bar',
+                                        label: 'f',
+                                        data: _datas,
+                                        backgroundColor: _colors,
+                                        borderWidth: 1,
+                                        borderColor: "#000000",
+                                        hoverBorderWidth: 3,
+                                    }
+                                ]
                             },
                             options: {
                                 responsive: false,
@@ -174,7 +184,7 @@
                 }
             };
 
-            var strurl = "http://127.0.0.1:8080/rest_api/costbill1";
+            var strurl = "http://127.0.0.1:8080/rest_api/costbill";
             xhr.open("GET", strurl, true);
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
             xhr.setRequestHeader("Content-Type", "application/json");

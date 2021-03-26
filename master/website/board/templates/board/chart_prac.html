@@ -10,52 +10,129 @@
     {% include "navbar.html" %}
     {% include "sidebar.html" %}
 
-    <style type="text/css">
-        .chartWrapper { position: relative; top:15%; }
-        .chartWrapper > canvas { position: absolute; left: 0; top: 0; pointer-events: none; }
-        .chartAreaWrapper { overflow-x: scroll; } .chartAreaWrapper2 { width: 10000px; }
+    <style>
+        .chartWrapper {
+            position: relative;
+        }
+
+        .chartWrapper > canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+        }
+
+        .chartAreaWrapper {
+            width: 600px;
+            overflow-x: scroll;
+        }
     </style>
 
-    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-    <script type="text/javascript">
-        var chartData = {
-            labels: ["label1", "label2", "label3", "label4", "label5", "label6",
-                "label7", "label8", "label9", "label10", "label11", "label12", "label13",
-                "label14", "label15", "label16"],
-            datasets: [{
-                type: 'line',
-                label: 'line',
-                borderColor: "#FF6384",
-                borderWidth: 2,
-                fill: false,
-                lineTension: 0,
-                data: [
-                    Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10,
-                    Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10,
-                    Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10,
-                    Math.random()*10, Math.random()*10, Math.random()*10, Math.random()*10
-                ]
-            }, {
-                type: 'bar',
-                label: 'bar',
-                backgroundColor: "#36A2EB",
-                data: [
-                    Math.random()*25000, Math.random()*25000, Math.random()*25000,
-                    Math.random()*25000, Math.random()*25000, Math.random()*25000,
-                    Math.random()*25000, Math.random()*25000, Math.random()*25000,
-                    Math.random()*25000, Math.random()*25000, Math.random()*25000,
-                    Math.random()*25000, Math.random()*25000, Math.random()*25000, Math.random()*25000
-                ],
-                borderColor: 'white', borderWidth: 2 },
-            ]
-        };
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header"><i class="fa fa-table"></i> 원가 차트</h3>
+                </div>
+            </div>
 
-        $.fn.hasScrollBar = function() {
-            return (this.prop("scrollHeight") == 0 && this.prop("clientHeight") == 0)
-                || (this.prop("scrollHeight") > this.prop("clientHeight")); };
+            <div id="container" class="chartWrapper" style="width:100%;">
+                <div class="chartAreaWrapper">
+                    <canvas id="mychart" height="150"></canvas>
+                </div>
 
-        window.onload = function() { var ctx9 = $('#chart9').get(0).getContext("2d"); var ctx9Axis = $('#chart9Axis').get(0).getContext("2d"); var ctx9Axis2 = $('#chart9Axis2').get(0).getContext("2d"); changeChartLength(chartData); window.theChart9 = new Chart(ctx9, { type: 'bar', data: chartData, options: { responsive: true, scales: { xAxes: [{ barThickness:50, gridLines: { display: false }, offset:true }], yAxes: [{ id: 'em', type: 'linear', poition: 'left', ticks: { max: 25000, min: 0, stepSize: 5000 }, gridLines: { drawBorder: false//축과 데이터의 경계선 표시 여부 } }, { id: 'ppm', type: 'linear', position: 'right', ticks: { max: 10, min: 0, stepSize: 2 }, gridLines: { drawBorder: false//축과 데이터의 경계선 표시 여부 } }] }, animation: { onComplete: function (animation) { var sourceCanvas = ctx9.canvas; var copyWidth = this.scales["em"].width; var copyWidth2 = this.scales["ppm"].width; var copyHeight = this.chart.height; var targetElementWidth = ctx9.canvas.clientWidth; var targetElementHeight = ctx9.canvas.clientHeight; ctx9Axis.canvas.width = copyWidth; ctx9Axis.canvas.height = copyHeight; ctx9Axis.drawImage(sourceCanvas, 0, 0, targetElementWidth, targetElementHeight); ctx9Axis2.canvas.height = copyHeight; var tmp = $("body").hasScrollBar() ? 16 : 0; ctx9Axis2.canvas.width = targetElementWidth > window.innerWidth-tmp ? window.innerWidth-tmp : targetElementWidth; ctx9Axis2.drawImage(sourceCanvas, sourceCanvas.width - copyWidth2-15, 0, copyWidth2+15, sourceCanvas.height, ctx9Axis2.canvas.width - copyWidth2 - 13.5 + (sourceCanvas.height - ctx9Axis2.canvas.height)/15, 0, copyWidth2 + 13.5 - (sourceCanvas.height - ctx9Axis2.canvas.height)/15, copyHeight); } } } }); </script> <div class="chartWrapper"> <div class="chartAreaWrapper"> <div class="chartAreaWrapper2"> <canvas id="chart9"> </div> </div> <canvas id="chart9Axis" height="300" width="32"> <canvas id="chart9Axis2" height="300" width="32"> </div>
+                <div class="table-responsive">
+                    <table class="table" width="100%">
+                        <thead>
+                            <tr>
+                                <th>COL1</th>
+                                <th>COL2</th>
+                                <th>COL3</th>
+                                <th width="5%"></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for i in rsHeader %}
+                            <tr>
+                                <td width="10%"></td>
+                                <td width="20%"></td>
+                                <td width="20%"></td>
+                                <td width="40%"></td>
+                                <td width="5%"></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script>
+        var months=['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+
+        var ctx = document.getElementById('mychart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                datasets: [{
+                    label: '바 그래프',
+                    type: 'bar', // 'bar' type, 전체 타입과 같다면 생략가능
+                    backgroundColor: 'rgb(255, 204, 102)',
+                    borderColor: 'rgb(255, 204, 102)',
+                    data: [10, 20, 30, 40, 50, 60],
+                    borderWidth: 3,
+                    hoverBorderWidth: 6
+                }, {
+                    label: '라인 그래프1',
+                    type: 'line',         // 'line' type
+                    fill: false,         // 채우기 없음
+                    lineTension: 0.2,  // 0이면 꺾은선 그래프, 숫자가 높을수록 둥글해짐
+                    pointRadius: 3,    // 각 지점에 포인트 주지 않음
+                    backgroundColor: 'rgb(255, 153, 0)',
+                    borderColor: 'rgb(255, 153, 0)',
+                    data: [40, 50, 60, 70, 80, 90]
+                }, {
+                    label: '라인 그래프2',
+                    type: 'line',
+                    fill: false,
+                    lineTension: 0.2,
+                    pointRadius: 0,
+                    backgroundColor: 'rgb(255, 204, 0)',
+                    borderColor: 'rgb(255, 204, 0)',
+                    data: [100, 120, 150, 100, 180, 200]
+                }]
+            },
+
+            // Configuration options
+            options: {
+                legend: {
+                    labels: {
+                        fontColor: '#000000' // label color
+                    }
+                },
+                scales: {
+                    // y축
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            fontColor: '#000000' // y축 폰트 color
+                        }
+                    }],
+                    // x축
+                    xAxes: [{
+                        stacked: true,
+                        ticks: {
+                            fontColor: '#000000' // x축 폰트 color
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 
 {% endblock %}

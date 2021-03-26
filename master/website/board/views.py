@@ -2860,3 +2860,15 @@ def chart_view(request):
 
 def chart_prac(request):
     return render(request, 'board/chart_prac.html')
+
+def chart_combo(request):
+    return render(request, 'board/chart_combo.html')
+
+def chart_compare(request):
+    return render(request, 'board/chart_compare.html')
+
+def chart_prac2(request):
+    return render(request, 'board/chart_prac2.html')
+
+def chart_main(request):
+    return render(request, 'board/chart_main.html')
