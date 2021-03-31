@@ -78,26 +78,28 @@
             data: {
                 labels: ['제조원가', '매출액'],
                 datasets: [{
+                    label: '설장률',
+                    type: 'line',
+                    yAxisID: 'y-axis-growth',
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: '#888888',
+                    borderColor: '#888888',
+                    data: [9, 5.7],
+                }, {
                     label: '전년',
                     type: 'bar',
+                    yAxisID: 'y-axis-cost',
                     backgroundColor: '#FFCC66',
                     data: [70, 110],
                     borderWidth: 0,
                     hoverBorderWidth: 0
-                },{
+                }, {
                     label: '당년',
                     type: 'bar',
+                    yAxisID: 'y-axis-cost',
                     backgroundColor: '#66CCFF',
                     data: [74, 110],
-                    borderWidth: 0,
-                    hoverBorderWidth: 0
-                },{
-                    label: '설장률',
-                    type: 'line',
-                    fill: false,
-                    lineTension: 2,
-                    backgroundColor: '#888888',
-                    data: [10.0, 5.7],
                     borderWidth: 0,
                     hoverBorderWidth: 0
                 }]
@@ -111,6 +113,17 @@
                 },
                 scales: {
                     yAxes: [{
+                        id: 'y-axis-cost',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            fontColor: '#000000',
+                            beginAtZero: true
+                        }
+                    }, {
+                        id: 'y-axis-growth',
+                        type: 'linear',
+                        position: 'right',
                         ticks: {
                             fontColor: '#000000',
                             beginAtZero: true
@@ -130,13 +143,24 @@
             data: {
                 labels: ['제조원가', '매출액'],
                 datasets: [{
+                    type: 'line',
+                    label: '성장률',
+                    yAxisID: 'y-axis-growth',
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: '#888888',
+                    borderColor: '#888888',
+                    data: [3.7, 4.3]
+                }, {
                     label: '전월',
+                    yAxisID: 'y-axis-cost',
                     backgroundColor: '#FFCC66',
                     data: [6.7, 14],
                     borderWidth: 0,
                     hoverBorderWidth: 0
                 },{
                     label: '당월',
+                    yAxisID: 'y-axis-cost',
                     backgroundColor: '#66CCFF',
                     data: [7.1, 15.5],
                     borderWidth: 0,
@@ -153,6 +177,17 @@
                 },
                 scales: {
                     yAxes: [{
+                        id: 'y-axis-cost',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            fontColor: '#000000',
+                            beginAtZero: true
+                        }
+                    }, {
+                        id: 'y-axis-growth',
+                        type: 'linear',
+                        position: 'right',
                         ticks: {
                             fontColor: '#000000',
                             beginAtZero: true
