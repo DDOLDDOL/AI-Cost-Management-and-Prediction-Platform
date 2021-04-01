@@ -69,70 +69,128 @@
             </div>
         </section>
     </section>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script>
-        var months=['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+var y_axis =
+  [{
+    "name": "1-PI-1",
+    "data": [{x: 0, y: 20.25}],
+    "color": "#136e2a",
+    "index": 0
+  }, {
+    "name": "1-PI-2",
+    "data": [{x: 0, y: 30.38}],
+    "color": "#3399ff",
+    "index": 1
+  }, {
+    "name": "1-Alpha",
+    "data": [{x: 0, y: 46.84}],
+    "color": "#9933ff",
+    "index": 2
+  }, {
+    "name": " ",
+    "data": [{x: 0, y: 0.0}],
+    "color": "#4d4d4d",
+    "index": 3
+  }, {
+    "name": " ",
+    "data": [{x: 0, y: 0.0}],
+    "color": "#4d4d4d",
+    "index": 4
+  }, {
+    "name": " ",
+    "data": [{x: 0, y: 2.53}],
+    "color": "#4d4d4d",
+    "index": 5
+  },
+  {
+    "name": "1-PI-1",
+    "data": [{x: 1, y: 36.59}],
+    "color": "#136e2a",
+    "index": 0
+  }, {
+    "name": "1-PI-2",
+    "data": [{x: 1, y: 34.15}],
+    "color": "#3399ff",
+    "index": 1
+  }, {
+    "name": " ",
+    "data": [{x: 1, y: 2.44}],
+    "color": "#4d4d4d",
+    "index": 2
+  }, {
+    "name": " ",
+    "data": [{x: 1, y: 26.83}],
+    "color": "#4d4d4d",
+    "index": 3
+  }, {
+    "name": " ",
+    "data": [{x: 1, y: 0.0}],
+    "color": "#4d4d4d",
+    "index": 4
+  }, {
+    "name": " ",
+    "data": [{x: 1, y: 0.0}],
+    "color": "#4d4d4d",
+    "index": 5
+  }]
 
-        var ctx = document.getElementById('mychart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
-                datasets: [{
-                    label: '바 그래프',
-                    type: 'bar', // 'bar' type, 전체 타입과 같다면 생략가능
-                    backgroundColor: 'rgb(255, 204, 102)',
-                    borderColor: 'rgb(255, 204, 102)',
-                    data: [10, 20, 30, 40, 50, 60],
-                    borderWidth: 3,
-                    hoverBorderWidth: 6
-                }, {
-                    label: '라인 그래프1',
-                    type: 'line',         // 'line' type
-                    fill: false,         // 채우기 없음
-                    lineTension: 0.2,  // 0이면 꺾은선 그래프, 숫자가 높을수록 둥글해짐
-                    pointRadius: 3,    // 각 지점에 포인트 주지 않음
-                    backgroundColor: 'rgb(255, 153, 0)',
-                    borderColor: 'rgb(255, 153, 0)',
-                    data: [40, 50, 60, 70, 80, 90]
-                }, {
-                    label: '라인 그래프2',
-                    type: 'line',
-                    fill: false,
-                    lineTension: 0.2,
-                    pointRadius: 0,
-                    backgroundColor: 'rgb(255, 204, 0)',
-                    borderColor: 'rgb(255, 204, 0)',
-                    data: [100, 120, 150, 100, 180, 200]
-                }]
-            },
+var x_axis = ["Project 1", "Project 2"]
 
-            // Configuration options
-            options: {
-                legend: {
-                    labels: {
-                        fontColor: '#000000' // label color
-                    }
-                },
-                scales: {
-                    // y축
-                    yAxes: [{
-                        stacked: true,
-                        ticks: {
-                            fontColor: '#000000' // y축 폰트 color
-                        }
-                    }],
-                    // x축
-                    xAxes: [{
-                        stacked: true,
-                        ticks: {
-                            fontColor: '#000000' // x축 폰트 color
-                        }
-                    }]
-                }
-            }
-        });
+Highcharts.chart('container', {
+  chart: {
+    type: 'bar'
+  },
+  title: {
+    text: 'Project Progress'
+  },
+  xAxis: {
+    categories: x_axis
+  },
+  yAxis: {
+    min: 0,
+    max: 100,
+    reversedStacks: false,
+    labels: {
+      formatter: function() {
+        return this.value + "%";
+      }
+    },
+    title: {
+      text: 'Percentage'
+    }
+  },
+  credits: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} %</b><br/>',
+    shared: false
+  },
+  legend: {
+    enabled: false,
+    reversed: false
+  },
+  plotOptions: {
+    series: {
+      stacking: 'percentage',
+      pointWidth: 60,
+      dataLabels: {
+        enabled: true,
+        format: '{series.name}',
+        style: {
+          color: '#DCDCDC',
+          fontSize: '13px',
+          fontWeight: 'pointer',
+          textOutline: '0px contrast',
+          textShadow: 'none'
+        }
+      }
+    }
+  },
+  series: y_axis
+});
     </script>
 
 {% endblock %}
